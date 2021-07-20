@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from ShapeCreator import *
+from ShapeCreator import creator_execute, CircleCreator, SquareCreator
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -55,17 +55,14 @@ class Ui_MainWindow(object):
         self.label_Factory.setText(_translate("MainWindow", "Factory"))
 
     def circle_click(self):
-        Creator_Execute(CircleCreator(), self)
+        creator_execute(CircleCreator(), self)
 
     def square_click(self):
-        Creator_Execute(SquareCreator(), self)
+        creator_execute(SquareCreator(), self)
 
     def draw_ui(self, item):
         self.scene.clear()
         self.scene.addItem(item)
-
-    def return_scene(self):
-        return self.scene
 
 
 if __name__ == "__main__":

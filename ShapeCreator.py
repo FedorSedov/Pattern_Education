@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from PyQt5.QtWidgets import QGraphicsEllipseItem, QGraphicsRectItem
 from PyQt5.QtGui import QPen, QColor
-from main import Ui_MainWindow
 
 
 class Shape(ABC):
@@ -52,6 +51,6 @@ class SquareCreator(ShapeCreator):
         return SquareShape()
 
 
-def Creator_Execute(ShapeCreator, ui):
+def creator_execute(ShapeCreator, ui):
     ShapeCreator.draw(ui)
 
