@@ -10,6 +10,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ShapeCreator import creator_execute, CircleCreator, SquareCreator
+from AbstractShapeCreator import abstract_draw_circle, abstract_draw_square, BlueFactory, BlackFactory
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -29,6 +31,32 @@ class Ui_MainWindow(object):
         self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphicsView.setGeometry(QtCore.QRect(30, 250, 641, 511))
         self.graphicsView.setObjectName("graphicsView")
+        self.line = QtWidgets.QFrame(self.centralwidget)
+        self.line.setGeometry(QtCore.QRect(-10, 100, 1061, 16))
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.label_AbstractFactory = QtWidgets.QLabel(self.centralwidget)
+        self.label_AbstractFactory.setGeometry(QtCore.QRect(30, 120, 81, 16))
+        self.label_AbstractFactory.setObjectName("label_AbstractFactory")
+        self.label_BlueFactory = QtWidgets.QLabel(self.centralwidget)
+        self.label_BlueFactory.setGeometry(QtCore.QRect(40, 140, 71, 16))
+        self.label_BlueFactory.setObjectName("label_BlueFactory")
+        self.label_BlackFactory = QtWidgets.QLabel(self.centralwidget)
+        self.label_BlackFactory.setGeometry(QtCore.QRect(40, 190, 71, 16))
+        self.label_BlackFactory.setObjectName("label_BlackFactory")
+        self.pushButton_BlueSquare = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_BlueSquare.setGeometry(QtCore.QRect(50, 160, 75, 23))
+        self.pushButton_BlueSquare.setObjectName("pushButton_BlueSquare")
+        self.pushButton_BlueCircle = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_BlueCircle.setGeometry(QtCore.QRect(130, 160, 75, 23))
+        self.pushButton_BlueCircle.setObjectName("pushButton_BlueCircle")
+        self.pushButton_BlackSquare = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_BlackSquare.setGeometry(QtCore.QRect(50, 210, 75, 23))
+        self.pushButton_BlackSquare.setObjectName("pushButton_BlackSquare")
+        self.pushButton_BlackCircle = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_BlackCircle.setGeometry(QtCore.QRect(130, 210, 75, 23))
+        self.pushButton_BlackCircle.setObjectName("pushButton_BlackCircle")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1043, 21))
@@ -46,6 +74,10 @@ class Ui_MainWindow(object):
 
         self.pushButton_Circle.clicked.connect(self.circle_click)
         self.pushButton_Square.clicked.connect(self.square_click)
+        self.pushButton_BlueSquare.clicked.connect(self.blue_square_click)
+        self.pushButton_BlueCircle.clicked.connect(self.blue_circle_click)
+        self.pushButton_BlackSquare.clicked.connect(self.black_square_click)
+        self.pushButton_BlackCircle.clicked.connect(self.black_circle_click)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -53,12 +85,31 @@ class Ui_MainWindow(object):
         self.pushButton_Square.setText(_translate("MainWindow", "Square"))
         self.pushButton_Circle.setText(_translate("MainWindow", "Circle"))
         self.label_Factory.setText(_translate("MainWindow", "Factory"))
+        self.label_AbstractFactory.setText(_translate("MainWindow", "Abstract Factory"))
+        self.label_BlueFactory.setText(_translate("MainWindow", "Blue Factory"))
+        self.label_BlackFactory.setText(_translate("MainWindow", "Black Factory"))
+        self.pushButton_BlueSquare.setText(_translate("MainWindow", "Square"))
+        self.pushButton_BlueCircle.setText(_translate("MainWindow", "Circle"))
+        self.pushButton_BlackSquare.setText(_translate("MainWindow", "Square"))
+        self.pushButton_BlackCircle.setText(_translate("MainWindow", "Circle"))
 
     def circle_click(self):
         creator_execute(CircleCreator(), self)
 
     def square_click(self):
         creator_execute(SquareCreator(), self)
+
+    def blue_square_click(self):
+        abstract_draw_square(BlueFactory(), self)
+
+    def black_square_click(self):
+        abstract_draw_square(BlackFactory(), self)
+
+    def blue_circle_click(self):
+        abstract_draw_circle(BlueFactory(), self)
+
+    def black_circle_click(self):
+        abstract_draw_circle(BlackFactory(), self)
 
     def draw_ui(self, item):
         self.scene.clear()
