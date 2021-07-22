@@ -10,6 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ShapeCreator import creator_execute, CircleCreator, SquareCreator
+from AbstractShapeCreator import abstract_draw_circle, abstract_draw_square, BlueFactory, BlackFactory
 
 
 class Ui_MainWindow(object):
@@ -56,6 +57,20 @@ class Ui_MainWindow(object):
         self.pushButton_BlackCircle = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_BlackCircle.setGeometry(QtCore.QRect(130, 210, 75, 23))
         self.pushButton_BlackCircle.setObjectName("pushButton_BlackCircle")
+        self.line_2 = QtWidgets.QFrame(self.centralwidget)
+        self.line_2.setGeometry(QtCore.QRect(110, -10, 20, 121))
+        self.line_2.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_2.setObjectName("line_2")
+        self.label_Builder = QtWidgets.QLabel(self.centralwidget)
+        self.label_Builder.setGeometry(QtCore.QRect(170, 10, 47, 13))
+        self.label_Builder.setObjectName("label_Builder")
+        self.pushButton_House1 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_House1.setGeometry(QtCore.QRect(150, 40, 75, 23))
+        self.pushButton_House1.setObjectName("pushButton_House1")
+        self.pushButton_House2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_House2.setGeometry(QtCore.QRect(150, 70, 75, 23))
+        self.pushButton_House2.setObjectName("pushButton_House2")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1043, 21))
@@ -73,6 +88,10 @@ class Ui_MainWindow(object):
 
         self.pushButton_Circle.clicked.connect(self.circle_click)
         self.pushButton_Square.clicked.connect(self.square_click)
+        self.pushButton_BlueSquare.clicked.connect(self.blue_square_click)
+        self.pushButton_BlueCircle.clicked.connect(self.blue_circle_click)
+        self.pushButton_BlackSquare.clicked.connect(self.black_square_click)
+        self.pushButton_BlackCircle.clicked.connect(self.black_circle_click)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -87,12 +106,27 @@ class Ui_MainWindow(object):
         self.pushButton_BlueCircle.setText(_translate("MainWindow", "Circle"))
         self.pushButton_BlackSquare.setText(_translate("MainWindow", "Square"))
         self.pushButton_BlackCircle.setText(_translate("MainWindow", "Circle"))
+        self.label_Builder.setText(_translate("MainWindow", "Builder"))
+        self.pushButton_House1.setText(_translate("MainWindow", "House 1"))
+        self.pushButton_House2.setText(_translate("MainWindow", "House 2"))
 
     def circle_click(self):
         creator_execute(CircleCreator(), self)
 
     def square_click(self):
         creator_execute(SquareCreator(), self)
+
+    def blue_square_click(self):
+        abstract_draw_square(BlueFactory(), self)
+
+    def black_square_click(self):
+        abstract_draw_square(BlackFactory(), self)
+
+    def blue_circle_click(self):
+        abstract_draw_circle(BlueFactory(), self)
+
+    def black_circle_click(self):
+        abstract_draw_circle(BlackFactory(), self)
 
     def draw_ui(self, item):
         self.scene.clear()
