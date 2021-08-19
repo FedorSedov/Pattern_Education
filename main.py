@@ -12,9 +12,11 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from ShapeCreator import creator_execute, CircleCreator, SquareCreator
 from AbstractShapeCreator import abstract_draw_circle, abstract_draw_square, BlueFactory, BlackFactory
 from Builder import House1_Builder, House2_Builder, Director
+from Memento import Originator, Caretaker
 
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1043, 815)
@@ -76,16 +78,25 @@ class Ui_MainWindow(object):
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1043, 21))
         self.menubar.setObjectName("menubar")
+        self.menuMain = QtWidgets.QMenu(self.menubar)
+        self.menuMain.setObjectName("menuMain")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.actionUndo = QtWidgets.QAction(MainWindow)
+        self.actionUndo.setObjectName("actionUndo")
+        self.menuMain.addAction(self.actionUndo)
+        self.menubar.addAction(self.menuMain.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.scene = QtWidgets.QGraphicsScene()
         self.graphicsView.setScene(self.scene)
+
+        self.originator = Originator(self.graphicsView)
+        self.caretaker = Caretaker(self.originator)
 
         self.pushButton_Circle.clicked.connect(self.circle_click)
         self.pushButton_Square.clicked.connect(self.square_click)
@@ -95,6 +106,7 @@ class Ui_MainWindow(object):
         self.pushButton_BlackCircle.clicked.connect(self.black_circle_click)
         self.pushButton_House1.clicked.connect(self.build_house1)
         self.pushButton_House2.clicked.connect(self.build_house2)
+        self.actionUndo.triggered.connect(self.undo)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -112,6 +124,11 @@ class Ui_MainWindow(object):
         self.label_Builder.setText(_translate("MainWindow", "Builder"))
         self.pushButton_House1.setText(_translate("MainWindow", "House 1"))
         self.pushButton_House2.setText(_translate("MainWindow", "House 2"))
+        self.menuMain.setTitle(_translate("MainWindow", "Main"))
+        self.actionUndo.setText(_translate("MainWindow", "Undo"))
+
+    def undo(self):
+        self.caretaker.undo(self)
 
     def circle_click(self):
         self.scene.clear()
@@ -138,7 +155,16 @@ class Ui_MainWindow(object):
         abstract_draw_circle(BlackFactory(), self)
 
     def draw_ui(self, item):
-        self.scene.addItem(item)
+        new_scene = QtWidgets.QGraphicsScene()
+        new_scene.addItem(item)
+        self.graphicsView.setScene(new_scene)
+        self.caretaker.backup(new_scene)
+
+    def restore_ui(self, scene):
+        if self.graphicsView.scene() == scene:
+            self.caretaker.undo(self)
+        else:
+            self.graphicsView.setScene(scene)
 
     def build_house1(self):
         self.scene.clear()
@@ -164,4 +190,5 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
+
     sys.exit(app.exec_())

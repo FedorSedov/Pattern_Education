@@ -73,10 +73,16 @@ class Ui_MainWindow(object):
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1043, 21))
         self.menubar.setObjectName("menubar")
+        self.menuMain = QtWidgets.QMenu(self.menubar)
+        self.menuMain.setObjectName("menuMain")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.actionUndo = QtWidgets.QAction(MainWindow)
+        self.actionUndo.setObjectName("actionUndo")
+        self.menuMain.addAction(self.actionUndo)
+        self.menubar.addAction(self.menuMain.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -97,6 +103,8 @@ class Ui_MainWindow(object):
         self.label_Builder.setText(_translate("MainWindow", "Builder"))
         self.pushButton_House1.setText(_translate("MainWindow", "House 1"))
         self.pushButton_House2.setText(_translate("MainWindow", "House 2"))
+        self.menuMain.setTitle(_translate("MainWindow", "Main"))
+        self.actionUndo.setText(_translate("MainWindow", "Undo"))
 
 
 if __name__ == "__main__":
